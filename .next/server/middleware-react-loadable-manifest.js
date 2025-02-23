@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"App.js -> ./ClientMaze\":{\"id\":\"App.js -> ./ClientMaze\",\"files\":[\"static/chunks/_app-pages-browser_ClientMaze_js.js\"]}}"
