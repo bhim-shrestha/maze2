@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  font-family: Arial, sans-serif;
+  font-family: "Helvetica Neue", Arial, sans-serif;
   background-color: #f0f0f0;
   min-height: 100vh;
   display: flex;
@@ -12,6 +12,8 @@
 h1 {
   color: #333;
   margin-bottom: 20px;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .game-info {
@@ -20,12 +22,20 @@ h1 {
   width: 100%;
   max-width: 400px;
   margin-bottom: 20px;
-  font-size: 18px;
+  font-size: 1.2rem;
   font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .maze-container {
   margin: 20px auto;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .maze {
@@ -33,47 +43,32 @@ h1 {
   gap: 1px;
   background-color: #ccc;
   border: 2px solid #999;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
 }
 
 .cell {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  position: relative;
   background-color: #fff;
-  transition: all 0.3s ease;
 }
 
-.wall {
-  background-color: #666;
+.start-point {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
 }
 
-.player {
-  background-color: #ffd700;
-  z-index: 10;
-}
-
-.traffic-light {
-  background-color: #f0f0f0;
-}
-
-.traffic-light.red {
-  background-color: #ffcccb;
-}
-
-.traffic-light.green {
-  background-color: #90ee90;
-}
-
-.roadblock {
-  background-color: #ff6b6b;
-}
-
-.exit {
-  background-color: #98fb98;
+.end-point {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
 }
 
 .game-over {
@@ -100,6 +95,7 @@ h1 {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
+  border-radius: 5px;
 }
 
 .game-over button:hover {

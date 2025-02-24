@@ -1,7 +1,7 @@
 import Cell from "./Cell"
 
-function Maze({ maze, playerPosition, turn, windowSize }) {
-  const cellSize = 30
+function Maze({ maze, playerPosition, playerDirection, windowSize, accidentPosition }) {
+  const cellSize = 40
   const scale = Math.min(
     (windowSize.width * 0.9) / (maze[0].length * cellSize),
     (windowSize.height * 0.7) / (maze.length * cellSize),
@@ -22,12 +22,13 @@ function Maze({ maze, playerPosition, turn, windowSize }) {
             <Cell
               key={`${x}-${y}`}
               type={cell.type}
-              obstacle={cell.obstacle}
+              openPaths={cell.openPaths}
+              nextOpenPaths={cell.nextOpenPaths}
               isPlayerHere={x === playerPosition.x && y === playerPosition.y}
-              trafficLightState={
-                cell.obstacle === "trafficLight" ? ((turn + (x + y)) % 10 < 5 ? "red" : "green") : null
-              }
-              isExit={x === maze[0].length - 1 && y === maze.length - 1}
+              playerDirection={playerDirection}
+              isStart={cell.isStart}
+              isEnd={cell.isEnd}
+              hasAccident={accidentPosition && accidentPosition.x === x && accidentPosition.y === y}
             />
           )),
         )}

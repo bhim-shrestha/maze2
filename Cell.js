@@ -1,25 +1,51 @@
-function Cell({ type, obstacle, isPlayerHere, trafficLightState, isExit }) {
-  let cellClass = "cell"
-  let content = ""
+import { Car, AlertTriangle } from "lucide-react"
 
-  if (type === "wall") {
-    cellClass += " wall"
-    content = "🏢"
-  } else if (isPlayerHere) {
-    cellClass += " player"
-    content = "🚗"
-  } else if (obstacle === "trafficLight") {
-    cellClass += ` traffic-light ${trafficLightState}`
-    content = trafficLightState === "green" ? "🟢" : "🔴"
-  } else if (obstacle === "roadblock") {
-    cellClass += " roadblock"
-    content = "🚧"
-  } else if (isExit) {
-    cellClass += " exit"
-    content = "🏁"
+function Cell({ type, openPaths, nextOpenPaths, isPlayerHere, playerDirection, isStart, isEnd, hasAccident }) {
+  const cellClass = `cell ${type}`
+
+  const getBorderColor = (direction) => {
+    if (openPaths.includes(direction)) return "green"
+    if (nextOpenPaths.includes(direction)) return "orange"
+    return "red"
   }
 
-  return <div className={cellClass}>{content}</div>
+  const walls = {
+    north: { top: 0, left: 0, right: 0, height: "4px" },
+    south: { bottom: 0, left: 0, right: 0, height: "4px" },
+    east: { top: 0, bottom: 0, right: 0, width: "4px" },
+    west: { top: 0, bottom: 0, left: 0, width: "4px" },
+  }
+
+  return (
+    <div className={cellClass}>
+      {Object.entries(walls).map(([direction, style]) => (
+        <div
+          key={direction}
+          style={{
+            ...style,
+            position: "absolute",
+            backgroundColor: getBorderColor(direction),
+          }}
+        />
+      ))}
+      {isPlayerHere && (
+        <Car
+          className={`w-4/5 h-4/5 text-blue-500 transform ${
+            playerDirection === "north"
+              ? "rotate-0"
+              : playerDirection === "east"
+                ? "rotate-90"
+                : playerDirection === "south"
+                  ? "rotate-180"
+                  : "rotate-270"
+          }`}
+        />
+      )}
+      {isStart && <div className="start-point" />}
+      {isEnd && <div className="end-point" />}
+      {hasAccident && <AlertTriangle className="w-4/5 h-4/5 text-red-500" />}
+    </div>
+  )
 }
 
 export default Cell

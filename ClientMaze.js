@@ -3,17 +3,26 @@
 import React, { useState, useEffect, useCallback } from "react"
 import Maze from "./Maze"
 import GameInfo from "./GameInfo"
-import { generateMaze } from "./mazeUtils"
+import { generateMaze, getRandomOpenPaths } from "./mazeUtils"
+
+const MAX_LEVEL = 99
+const INITIAL_SCORE = 5000
+const SCORE_DECREMENT = 100
+const PATH_CHANGE_INTERVAL = 7000 // 7 seconds
+const ACCIDENT_INTERVAL = 7000 // 7 seconds
 
 function ClientMaze() {
   const [level, setLevel] = useState(1)
-  const [maze, setMaze] = useState(generateMaze(level))
+  const [maze, setMaze] = useState(() => generateMaze(1))
   const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 })
-  const [turn, setTurn] = useState(0)
-  const [score, setScore] = useState(0)
+  const [playerDirection, setPlayerDirection] = useState("east")
+  const [score, setScore] = useState(INITIAL_SCORE)
   const [timeLeft, setTimeLeft] = useState(60)
   const [gameStatus, setGameStatus] = useState("playing")
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
+  const [accidentPosition, setAccidentPosition] = useState(null)
+
+  const randomRef = React.useRef(Math.random)
 
   useEffect(() => {
     setWindowSize({ width: window.innerWidth, height: window.innerHeight })
@@ -33,46 +42,79 @@ function ClientMaze() {
     }
   }, [timeLeft, gameStatus])
 
+  useEffect(() => {
+    if (gameStatus !== "playing") return
+
+    const changePaths = () => {
+      setMaze((prevMaze) => {
+        return prevMaze.map((row) =>
+          row.map((cell) => ({
+            ...cell,
+            openPaths: cell.nextOpenPaths || getRandomOpenPaths(randomRef.current),
+            nextOpenPaths: getRandomOpenPaths(randomRef.current),
+          })),
+        )
+      })
+    }
+
+    const createAccident = () => {
+      const x = Math.floor(randomRef.current() * maze[0].length)
+      const y = Math.floor(randomRef.current() * maze.length)
+      setAccidentPosition({ x, y })
+
+      // Clear accident after 7 seconds
+      setTimeout(() => setAccidentPosition(null), ACCIDENT_INTERVAL)
+    }
+
+    const pathInterval = setInterval(changePaths, PATH_CHANGE_INTERVAL)
+    const accidentInterval = setInterval(createAccident, ACCIDENT_INTERVAL)
+
+    return () => {
+      clearInterval(pathInterval)
+      clearInterval(accidentInterval)
+    }
+  }, [gameStatus, maze])
+
   const movePlayer = useCallback(
     (dx, dy) => {
       if (gameStatus !== "playing") return
 
       const newX = playerPosition.x + dx
       const newY = playerPosition.y + dy
-      const exitX = maze[0].length - 1
-      const exitY = maze.length - 1
 
       if (newX >= 0 && newX < maze[0].length && newY >= 0 && newY < maze.length) {
-        const cell = maze[newY][newX]
-        if (cell.type === "path") {
-          let canPass = true
-          if (cell.obstacle === "trafficLight") {
-            canPass = (turn + (newX + newY)) % 10 >= 5
-          } else if (cell.obstacle === "roadblock") {
-            canPass = false
-          }
-          if (canPass) {
-            setPlayerPosition({ x: newX, y: newY })
-            setTurn(turn + 1)
-            setScore(score + 1)
+        const currentCell = maze[playerPosition.y][playerPosition.x]
+        const newDirection = dx === 1 ? "east" : dx === -1 ? "west" : dy === -1 ? "north" : "south"
 
-            if (newX === exitX && newY === exitY) {
-              if (level === 10) {
-                setGameStatus("won")
-              } else {
-                setLevel(level + 1)
-                setMaze(generateMaze(level + 1))
+        if (currentCell.openPaths.includes(newDirection)) {
+          if (accidentPosition && accidentPosition.x === newX && accidentPosition.y === newY) {
+            setGameStatus("lost")
+            return
+          }
+
+          setPlayerPosition({ x: newX, y: newY })
+          setPlayerDirection(newDirection)
+          setScore((prevScore) => Math.max(prevScore - 1, 0))
+
+          if (maze[newY][newX].isEnd) {
+            if (level === MAX_LEVEL) {
+              setGameStatus("won")
+            } else {
+              setLevel((prevLevel) => {
+                const newLevel = prevLevel + 1
+                setMaze(generateMaze(newLevel))
                 setPlayerPosition({ x: 0, y: 0 })
-                setTurn(0)
+                setPlayerDirection("east")
                 setTimeLeft(60)
-                setScore(score + 100)
-              }
+                setScore((prevScore) => Math.max(prevScore - SCORE_DECREMENT, 0))
+                return newLevel
+              })
             }
           }
         }
       }
     },
-    [maze, playerPosition, turn, level, score, gameStatus],
+    [maze, playerPosition, level, gameStatus, accidentPosition],
   )
 
   useEffect(() => {
@@ -132,16 +174,23 @@ function ClientMaze() {
     setLevel(1)
     setMaze(generateMaze(1))
     setPlayerPosition({ x: 0, y: 0 })
-    setTurn(0)
-    setScore(0)
+    setPlayerDirection("east")
+    setScore(INITIAL_SCORE)
     setTimeLeft(60)
     setGameStatus("playing")
+    setAccidentPosition(null)
   }
 
   return (
     <>
       <GameInfo level={level} score={score} timeLeft={timeLeft} />
-      <Maze maze={maze} playerPosition={playerPosition} turn={turn} windowSize={windowSize} />
+      <Maze
+        maze={maze}
+        playerPosition={playerPosition}
+        playerDirection={playerDirection}
+        windowSize={windowSize}
+        accidentPosition={accidentPosition}
+      />
       {gameStatus === "won" && (
         <div className="game-over">
           <h2>Congratulations! You've completed all levels!</h2>
