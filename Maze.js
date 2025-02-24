@@ -1,15 +1,21 @@
 import Cell from "./Cell"
 
 function Maze({ maze, playerPosition, playerDirection, windowSize, accidentPosition }) {
-  const cellSize = 40
-  const scale = Math.min(
-    (windowSize.width * 0.9) / (maze[0].length * cellSize),
-    (windowSize.height * 0.7) / (maze.length * cellSize),
-    1,
-  )
+  const minCellSize = 40 // Minimum cell size
+  const maxCellSize = 80 // Maximum cell size
+
+  const calculateCellSize = () => {
+    const maxWidth = windowSize.width * 0.9
+    const maxHeight = windowSize.height * 0.7
+    const cellWidth = maxWidth / maze[0].length
+    const cellHeight = maxHeight / maze.length
+    return Math.min(Math.max(Math.min(cellWidth, cellHeight), minCellSize), maxCellSize)
+  }
+
+  const cellSize = calculateCellSize()
 
   return (
-    <div className="maze-container" style={{ transform: `scale(${scale})`, transformOrigin: "top center" }}>
+    <div className="maze-container">
       <div
         className="maze"
         style={{
@@ -29,6 +35,7 @@ function Maze({ maze, playerPosition, playerDirection, windowSize, accidentPosit
               isStart={cell.isStart}
               isEnd={cell.isEnd}
               hasAccident={accidentPosition && accidentPosition.x === x && accidentPosition.y === y}
+              size={cellSize}
             />
           )),
         )}

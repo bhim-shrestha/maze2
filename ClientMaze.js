@@ -25,10 +25,10 @@ function ClientMaze() {
   const randomRef = React.useRef(Math.random)
 
   useEffect(() => {
-    setWindowSize({ width: window.innerWidth, height: window.innerHeight })
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight })
     }
+    handleResize()
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
@@ -182,7 +182,8 @@ function ClientMaze() {
   }
 
   return (
-    <>
+    <div className="App">
+      <h1>City Maze</h1>
       <GameInfo level={level} score={score} timeLeft={timeLeft} />
       <Maze
         maze={maze}
@@ -205,7 +206,7 @@ function ClientMaze() {
           <button onClick={restartGame}>Try Again</button>
         </div>
       )}
-    </>
+    </div>
   )
 }
 
