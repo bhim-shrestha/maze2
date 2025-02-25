@@ -1,9 +1,10 @@
 :root {
-  --primary-color: #4a4e69;
-  --secondary-color: #9a8c98;
-  --accent-color: #c9ada7;
-  --background-color: #f2e9e4;
-  --text-color: #22223b;
+  --primary-color: #3a506b;
+  --secondary-color: #5bc0be;
+  --accent-color: #fca311;
+  --background-color: #1c2541;
+  --text-color: #ffffff;
+  --cell-color: #0b132b;
 }
 
 body {
@@ -11,6 +12,7 @@ body {
   font-family: "Roboto", sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
+  overflow: hidden;
 }
 
 .App {
@@ -19,16 +21,16 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 20px;
   box-sizing: border-box;
 }
 
 h1 {
-  color: var(--primary-color);
-  margin-bottom: 20px;
+  color: var(--accent-color);
+  margin-bottom: 10px;
   font-size: 2.5rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .game-info {
@@ -36,22 +38,22 @@ h1 {
   justify-content: space-around;
   width: 100%;
   max-width: 400px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 1.2rem;
   font-weight: bold;
-  background-color: var(--secondary-color);
-  color: white;
-  padding: 15px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  padding: 10px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .maze-container {
-  margin: 20px auto;
-  background-color: var(--accent-color);
+  margin: 10px auto;
+  background-color: var(--secondary-color);
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease;
 }
 
@@ -70,7 +72,7 @@ h1 {
   align-items: center;
   justify-content: center;
   position: relative;
-  background-color: white;
+  background-color: var(--cell-color);
   transition: all 0.3s ease;
 }
 
@@ -141,14 +143,76 @@ h1 {
   animation: pulse 1s infinite;
 }
 
+.control-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.control-buttons button {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 24px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-buttons button:hover {
+  background-color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.horizontal-buttons {
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   h1 {
     font-size: 2rem;
   }
 
   .game-info {
-    font-size: 1rem;
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .control-buttons button {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+}
+
+@media (max-height: 600px) {
+  .App {
     padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+
+  .game-info {
+    margin-bottom: 5px;
+  }
+
+  .maze-container {
+    margin: 5px auto;
+  }
+
+  .control-buttons {
+    margin-top: 5px;
   }
 }
 

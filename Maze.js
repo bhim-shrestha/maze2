@@ -1,15 +1,12 @@
 import Cell from "./Cell"
 
 function Maze({ maze, playerPosition, playerDirection, windowSize, accidentPosition }) {
-  const minCellSize = 40 // Minimum cell size
-  const maxCellSize = 80 // Maximum cell size
-
   const calculateCellSize = () => {
     const maxWidth = windowSize.width * 0.9
-    const maxHeight = windowSize.height * 0.7
+    const maxHeight = windowSize.height * 0.5 // Adjust this value to leave space for controls
     const cellWidth = maxWidth / maze[0].length
     const cellHeight = maxHeight / maze.length
-    return Math.min(Math.max(Math.min(cellWidth, cellHeight), minCellSize), maxCellSize)
+    return Math.floor(Math.min(cellWidth, cellHeight))
   }
 
   const cellSize = calculateCellSize()

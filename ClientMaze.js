@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react"
 import Maze from "./Maze"
 import GameInfo from "./GameInfo"
 import { generateMaze, getRandomOpenPaths } from "./mazeUtils"
+import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from "lucide-react"
 
 const MAX_LEVEL = 99
 const INITIAL_SCORE = 5000
@@ -119,6 +120,7 @@ function ClientMaze() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      e.preventDefault() // Prevent default scrolling behavior
       switch (e.key) {
         case "ArrowUp":
           movePlayer(0, -1)
@@ -144,6 +146,7 @@ function ClientMaze() {
 
   useEffect(() => {
     const handleTouchStart = (e) => {
+      e.preventDefault() // Prevent default touch behavior
       touchStart.current = {
         x: e.touches[0].clientX,
         y: e.touches[0].clientY,
@@ -151,6 +154,7 @@ function ClientMaze() {
     }
 
     const handleTouchEnd = (e) => {
+      e.preventDefault() // Prevent default touch behavior
       const dx = e.changedTouches[0].clientX - touchStart.current.x
       const dy = e.changedTouches[0].clientY - touchStart.current.y
 
@@ -161,8 +165,8 @@ function ClientMaze() {
       }
     }
 
-    window.addEventListener("touchstart", handleTouchStart)
-    window.addEventListener("touchend", handleTouchEnd)
+    window.addEventListener("touchstart", handleTouchStart, { passive: false })
+    window.addEventListener("touchend", handleTouchEnd, { passive: false })
 
     return () => {
       window.removeEventListener("touchstart", handleTouchStart)
@@ -192,6 +196,22 @@ function ClientMaze() {
         windowSize={windowSize}
         accidentPosition={accidentPosition}
       />
+      <div className="control-buttons">
+        <button onClick={() => movePlayer(0, -1)} aria-label="Move Up">
+          <ArrowUp />
+        </button>
+        <div className="horizontal-buttons">
+          <button onClick={() => movePlayer(-1, 0)} aria-label="Move Left">
+            <ArrowLeft />
+          </button>
+          <button onClick={() => movePlayer(1, 0)} aria-label="Move Right">
+            <ArrowRight />
+          </button>
+        </div>
+        <button onClick={() => movePlayer(0, 1)} aria-label="Move Down">
+          <ArrowDown />
+        </button>
+      </div>
       {gameStatus === "won" && (
         <div className="game-over">
           <h2>Congratulations! You've completed all levels!</h2>
