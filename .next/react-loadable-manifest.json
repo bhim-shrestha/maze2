@@ -1,8 +1,0 @@
-{
-  "App.js -> ./ClientMaze": {
-    "id": "App.js -> ./ClientMaze",
-    "files": [
-      "static/chunks/_app-pages-browser_ClientMaze_js.js"
-    ]
-  }
-}
