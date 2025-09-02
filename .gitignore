@@ -1,2 +1,136 @@
-node_modules
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-store/
+
+# Next.js Build & Cache
 .next/
+out/
+.swc/
+.turbo/
+
+# Production Builds
+build/
+dist/
+*.tgz
+*.tar.gz
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.local
+
+# Runtime & Logs
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+.nyc_output
+
+# Coverage & Testing
+coverage/
+.coverage
+*.lcov
+.jest/
+test-results/
+playwright-report/
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# TypeScript
+*.tsbuildinfo
+.tscache/
+
+# Storybook
+.out
+.storybook-out
+storybook-static/
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# Vercel
+.vercel
+.now
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Local Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker
+.dockerignore
+Dockerfile.prod
+
+# Misc
+.sass-cache/
+.connect.lock
+.grunt
+.lock-wscript
+lib-cov
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# PWA
+sw.js*
+workbox-*.js
+public/sw.js
+public/workbox-*.js
+
+# Analytics & Monitoring
+.sentryclirc
+sentry.properties
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Game-specific
+game-saves/
+user-data/
+local-storage-backup/
