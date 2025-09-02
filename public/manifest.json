@@ -1,0 +1,34 @@
+{
+  "name": "City Maze - Advanced Maze Game",
+  "short_name": "City Maze",
+  "description": "Navigate through dynamic mazes, collect power-ups, and challenge yourself through 99 levels!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "Start New Game",
+      "short_name": "New Game",
+      "description": "Start a new maze game",
+      "url": "/?action=newgame",
+      "icons": [{ "src": "/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
